@@ -1,63 +1,69 @@
-import sendgrid
-import string
-from credentials import username, password
-import smtplib
-from email.mime.multipart import MIMEMultipart
+import smtplib, ssl
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from credentials import username, password
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
+DRIVER_PATH = '/path/to/chromedriver'
+driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+driver.get('https://google.com')
 
-# Your From email address
-fromEmail = "justincurl13@gmail.com"
-# Recipient
-toEmail = "jcurl@princeton.edu"
+# URL = 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005300'
+# page = requests.get(URL)
 
-# Create message container - the correct MIME type is multipart/alternative.
-msg = MIMEMultipart('alternative')
-msg['Subject'] = "Testing Message"
-msg['From'] = fromEmail
-msg['To'] = toEmail
+# # print(page.text)
+# # print(page.content)
+# print(page.headers)
 
-# Create the body of the message (a plain-text and an HTML version).
-# text is your plain-text email
-# html is your html version of the email
-# if the reciever is able to view html emails then only the html
-# email will be displayed
-text = "Hi!\nHow are you?\n"
+# # soup = BeautifulSoup(page.content, 'html.parser')
 
+# # results = soup.find(id='course-details')
 
-html = """\n
+# # sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
+# # for section in sections:
+# #   print(section.contents[2].value)
+# #   # print(section.prettify())
+
+sender_email = username
+receiver_email = "justincurl13@gmail.com"
+
+message = MIMEMultipart("alternative")
+message["Subject"] = "%s Course Notification".format(course)
+message["From"] = sender_email
+message["To"] = receiver_email
+
+# Create the plain-text and HTML version of your message
+text = """\
+Hi,
+How are you?
+Real Python has many great tutorials:
+www.realpython.com"""
+html = """\
 <html>
-  <head></head>
   <body>
-    Hi!<br>
-       How are you?<p>
-     Weather.com says: It is 32 now in South San Francisco. <p>
-     Yahoo says: It is 32 F now in South San Francisco. <p>
-     
-     smooches, <br>
-    the white rabbit
+    <p>Hi,<br>
+       How are you?<br>
+       <a href="http://www.realpython.com">Real Python</a> 
+       has many great tutorials.
+    </p>
   </body>
 </html>
- """
+"""
 
-# Login credentials - update them with your own!
+# Turn these into plain/html MIMEText objects
+part1 = MIMEText(text, "plain")
+part2 = MIMEText(html, "html")
 
-# Record the MIME types of both parts - text/plain and text/html.
-part1 = MIMEText(text, 'plain')
-part2 = MIMEText(html, 'html')
+# Add HTML/plain-text parts to MIMEMultipart message
+# The email client will try to render the last part first
+message.attach(part1)
+message.attach(part2)
 
-# Attach parts into message container.
-msg.attach(part1)
-msg.attach(part2)
-
-# Open a connection to the SendGrid mail server
-s = smtplib.SMTP('smtp.sendgrid.net', 587)
-
-# Authenticate
-s.login(username, password)
-
-# sendmail function takes 3 arguments: sender's address, recipient's address
-# and message to send - here it is sent as one string.
-s.sendmail(fromEmail, toEmail, msg.as_string())
-
-s.quit()
+# Create secure connection with server and send email
+context = ssl.create_default_context()
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    server.login(sender_email, password)
+    server.sendmail(
+        sender_email, receiver_email, message.as_string()
+    )
