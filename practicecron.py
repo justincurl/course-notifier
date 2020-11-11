@@ -1,12 +1,17 @@
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from credentials import username, password
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import os
 
-DRIVER_PATH = '/path/to/chromedriver'
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
 driver.get('https://google.com')
 
 # URL = 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005300'
@@ -25,7 +30,8 @@ driver.get('https://google.com')
 # #   print(section.contents[2].value)
 # #   # print(section.prettify())
 
-sender_email = username
+sender_email = 'princetonnotifier@gmail.com'
+password = 'Notifyme2020!'
 receiver_email = "justincurl13@gmail.com"
 
 message = MIMEMultipart("alternative")
