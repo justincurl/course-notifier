@@ -89,6 +89,7 @@ def notify(SEND_EMAIL):
       # check if an email needs to even be send
       print(enrolled, limit)
       if limit != None and enrolled != limit and enrolled > 0:
+        print('set to true: ^^')
         SEND_EMAIL = True
       
       text.append((s_class_number[i], s_section[i]))
@@ -99,7 +100,7 @@ def notify(SEND_EMAIL):
       msg_info += "Class Number: {}\nSection: {}\nEnrolled: {}\nLimit: {}\n".format(text[i][0].get_text(), text[i][1].get_text(), enrollment[i][0], enrollment[i][1])
       msg_info += "\n"
     
-    print('text: ', msg_info)
+    print(msg_info)
   
   message["Subject"] = msg_subject
 
