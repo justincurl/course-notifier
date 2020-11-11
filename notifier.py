@@ -19,7 +19,7 @@ def notify():
  # Set-up email account
   sender_email = 'princetonnotifier@gmail.com'
   password = 'Notifyme2020!'
-  receiver_email = ["justincurl13@gmail.com"]
+  receiver_email = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
 
   # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
   client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
@@ -72,7 +72,7 @@ def notify():
     message = MIMEMultipart("alternative")
     message["Subject"] = "[Enrollment Update] {}: {}".format(s_subject, s_course_title)
     message["From"] = sender_email
-    message["To"] = receiver_email
+    message["To"] = receiver_email.join(',')
 
   # Create html version of message
     text = """\
