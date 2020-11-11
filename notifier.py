@@ -33,7 +33,7 @@ def notify():
   msg_info = ""
 
   message = MIMEMultipart("alternative")
-  message["Subject"] = "[Enrollment Update]: "
+  msg_subject = "[Enrollment Update]: "
   message["From"] = sender_email
   message["To"] = ', '.join(recipients)
 
@@ -60,11 +60,11 @@ def notify():
     for course in s_subject:
       try: 
         s_subject = course.get_text()
+        s_subject = "".join(s_subject.split())
       except:
         s_subject = "error"
 
-    message["Subject"] += s_subject
-    message["Subject"] += "|"
+    msg_subject += s_subject + "|"
       
   # get enrollment numbers
     s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
@@ -74,8 +74,6 @@ def notify():
     text = []
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
-
-    s_subject = "".join(s_subject.split())
  
     try:
       print(type(s_enrollment))
@@ -86,13 +84,15 @@ def notify():
       print(str(s_enrollment).split())
     except:
       print('splitting error')
+    
   # Create string version of message
-    msg_info += "\nClass Information:{}\n".format(s_subject)
+    msg_info += "\n================{}:{}================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
-      msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
+      msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
 
     print('text: ', msg_info)
   
+  message["Subject"] = msg_subject
   # Turn html into MIMEText objects
   part1 = MIMEText(msg_info, "plain")
 
