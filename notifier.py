@@ -75,19 +75,19 @@ def notify():
     message["To"] = ', '.join(recipients)
 
   # Create string version of message
-    text = """\
+    msg_info = """\
       Class Information: \n
     """
     for i in range(len(text)):
-      text += """\
+      msg_info += """\
         Class Number: {} \n
         Section: {} \n
         Enrollment: {} \n
       """.format(text[i][0], text[i][1], text[i][2])
 
-    print('text: ', text)
+    print('text: ', msg_info)
     # Turn html into MIMEText objects
-    part1 = MIMEText(text, "plain")
+    part1 = MIMEText(msg_info, "plain")
 
     # Add HTML/plain-text parts to MIMEMultipart message
     message.attach(part1)
