@@ -29,7 +29,7 @@ for course in courses:
   print("============ SOUP ==========")
   print(soup.prettify())
 
-  s_course_title = soup.find_all("h2", class_="course-title").content
+  s_course_title = soup.find_all("h2", class_="course-title").get_text()
   s_subject = soup.find_all("div", class_="subject-associations").get_text()
   
   s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
