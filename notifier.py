@@ -16,10 +16,10 @@ def notify():
   chrome_options.add_argument("--no-sandbox")
   driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
- # Set-up email account
+ # Set-up email sending 
   sender_email = 'princetonnotifier@gmail.com'
   password = 'Notifyme2020!'
-  receiver_email = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
+  recipients = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
 
   # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
   client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
@@ -72,14 +72,14 @@ def notify():
     message = MIMEMultipart("alternative")
     message["Subject"] = "[Enrollment Update] {}: {}".format(s_subject, s_course_title)
     message["From"] = sender_email
-    message["To"] = receiver_email.join(',')
+    message["To"] = recipients.join(', ')
 
-  # Create html version of message
+  # Create string version of message
     text = """\
-      Class Information:
+      Class Information: \n
     """
     for i in range(len(text)):
-      text+= """\
+      text += """\
         Class Number: {} \n
         Section: {} \n
         Enrollment: {} \n
@@ -96,7 +96,7 @@ def notify():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(
-            sender_email, receiver_email, message.as_string()
+            sender_email, recipients, message.as_string()
         )
 
     # send text to self
