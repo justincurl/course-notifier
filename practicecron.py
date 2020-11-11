@@ -29,7 +29,7 @@ sender_email = username
 receiver_email = "justincurl13@gmail.com"
 
 message = MIMEMultipart("alternative")
-message["Subject"] = "%s Course Notification".format(course)
+message["Subject"] = "%s Course Notification".format("Pol 315")
 message["From"] = sender_email
 message["To"] = receiver_email
 
