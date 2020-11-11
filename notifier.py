@@ -5,14 +5,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import os
 import time
-from apscheduler.schedulers.blocking import BlockingScheduler
 
-sched = BlockingScheduler()
-
-@sched.scheduled_job('interval', minutes=3)
-def timed_job():
-  print('This job is run every three minutes.')
-
+def notify():
   # Set up Selenium
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -110,5 +104,3 @@ def timed_job():
         server.sendmail(
             sender_email, receiver_email, message.as_string()
         )
-
-sched.start()

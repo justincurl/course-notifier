@@ -1,1 +1,1 @@
-clock: python notifier.py
+clock: python jobs.py
