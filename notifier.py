@@ -85,6 +85,7 @@ def notify():
         Enrollment: {} \n
       """.format(text[i][0], text[i][1], text[i][2])
 
+    print('text: ', text)
     # Turn html into MIMEText objects
     part1 = MIMEText(text, "plain")
 
@@ -98,8 +99,11 @@ def notify():
         server.sendmail(
             sender_email, recipients, message.as_string()
         )
+    print('email sent')
 
     # send text to self
     client.messages.create(to="+16465491230", 
                           from_="+12184768626", 
                           body=text)
+    
+    print('text sent')
