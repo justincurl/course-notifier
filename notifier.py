@@ -75,26 +75,17 @@ def notify():
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
+    s_subject = "".join(s_subject.split())
+ 
     try:
-      print(type(s_subject))
+      print(type(s_enrollment))
     except:
       print('type printing error')
     
     try:
-      print(s_subject.split())
-      print("".join(s_subject.split()))
+      print(str(s_enrollment).split())
     except:
-      print('subject splitting error')
-
-    try:
-      print("whitespace removal" + s_subject.replace(" ", ""))
-    except:
-      print('whitespace replacement error')
-
-    try:
-      print(s_enrollment.split())
-    except:
-      print('enrollment splitting error')
+      print('splitting error')
   # Create string version of message
     msg_info += "\nClass Information:{}\n".format(s_subject)
     for i in range(len(text)):
