@@ -85,7 +85,7 @@ def notify():
       print('type printing error')
     
     try:
-      print(enrollment_readable[0])
+      print(enrollment_readable[0].get_text())
     except:
       print('indexing error')
     
