@@ -14,13 +14,17 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), c
 
 driver.get('https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005300')
 
+driver.save_screenshot('screenshot.png')
+
 page = driver.page_source
 
 print(page)
 
-# # soup = BeautifulSoup(page.content, 'html.parser')
+soup = BeautifulSoup(page, 'html.parser')
 
-# # results = soup.find(id='course-details')
+results = soup.find(id='course-details')
+  
+print(results)
 
 # # sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
 # # for section in sections:
