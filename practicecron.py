@@ -18,20 +18,26 @@ driver.save_screenshot('screenshot.png')
 
 page = driver.page_source
 
-print(page)
+d_course_title = driver.find_element_by_class_name('course-title')
+d_subject = driver.find_element_by_class_name('subject-associations')
+d_enrolled = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
 
 soup = BeautifulSoup(page, 'html.parser')
 
+print("============ SOUP ==========")
 print(soup.prettify())
 
 results = soup.find(id='course-details')
-  
-print(results)
 
-# # sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
-# # for section in sections:
-# #   print(section.contents[2].value)
-# #   # print(section.prettify())
+s_course_title = soup.find_all("h2", class_="course-title")
+s_subject = soup.find_all("div", class_="subject-associations")
+s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
+
+print("========== RESULTS ===========")
+
+sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
+for section in sections:
+  print(section)
 
 sender_email = 'princetonnotifier@gmail.com'
 password = 'Notifyme2020!'
@@ -44,24 +50,25 @@ message["To"] = receiver_email
 
 # Create the plain-text and HTML version of your message
 text = """\
-Hi,
-How are you?
-Real Python has many great tutorials:
-www.realpython.com"""
+Driver Title: {}
+Driver Subject: {}
+Soup Title: {}
+Soup Subject: {}""".format(d_course_title, d_subject, s_course_title, s_subject)
 html = """\
 <html>
   <body>
     <p>Hi,<br>
        How are you?<br>
-       <a href="http://www.realpython.com">Real Python</a> 
-       has many great tutorials.
+       Enrollment: 
+       D: {d_enrollment}
+       S: {s_enrollment}
     </p>
   </body>
 </html>
-"""
+""".format(d_enrollment = d_enrollment, s_enrollemnt=s_enrollment)
 
 # Turn these into plain/html MIMEText objects
-part1 = MIMEText(page.prettify(), "html")
+part1 = MIMEText(page, "html")
 part2 = MIMEText(html, "html")
 
 # Add HTML/plain-text parts to MIMEMultipart message
