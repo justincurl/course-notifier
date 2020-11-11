@@ -76,21 +76,17 @@ def notify():
     text = []
     enrollment_readable = []
     for i in range(len(s_section)):
-      text.append((s_class_number[i], s_section[i], s_enrollment[i]))
-      enrollment_readable.append(s_enrollment[i].get_text())
+      enrollment_readable = s_enrollment[i].get_text().split()
+      print(enrollment_readable)
+      text.append((s_class_number[i], s_section[i], s_enrollment[i].get_text().split()))
 
-    try:
-      print(type(enrollment_readable))
-    except:
-      print('type printing error')
-    
     try:
       print(enrollment_readable[0].get_text())
     except:
       print('indexing error')
     
   # Create string version of message
-    msg_info += "===================\n{}: {}\n===================\n".format(s_subject, s_course_title)
+    msg_info += "====================\n{}: {}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
       msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
       msg_info += "\n"
