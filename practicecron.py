@@ -1,25 +1,19 @@
-import pywapi
 import sendgrid
 import string
+from credentials import username, password
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-weather_com_result = pywapi.get_weather_from_weather_com('94080', units="imperial")
-yahoo_result = pywapi.get_weather_from_yahoo('94080', units="imperial")
-
-weathercomstr = string.lower(weather_com_result['current_conditions']['text']) + " and " + weather_com_result['current_conditions']['temperature'] 
-yahoostr = string.lower(yahoo_result['condition']['text']) + " and " + yahoo_result['condition']['temp']
-
 
 # Your From email address
-fromEmail = "info@paulkarayan.com"
+fromEmail = "justincurl13@gmail.com"
 # Recipient
-toEmail = "yourname@gmail.com"
+toEmail = "jcurl@princeton.edu"
 
 # Create message container - the correct MIME type is multipart/alternative.
 msg = MIMEMultipart('alternative')
-msg['Subject'] = "Weather from the White Rabbit"
+msg['Subject'] = "Testing Message"
 msg['From'] = fromEmail
 msg['To'] = toEmail
 
@@ -37,19 +31,16 @@ html = """\n
   <body>
     Hi!<br>
        How are you?<p>
-     Weather.com says: It is %s F now in South San Francisco. <p>
-     Yahoo says: It is %s F now in South San Francisco. <p>
+     Weather.com says: It is 32 now in South San Francisco. <p>
+     Yahoo says: It is 32 F now in South San Francisco. <p>
      
      smooches, <br>
     the white rabbit
   </body>
 </html>
- """ % (weathercomstr, yahoostr)
+ """
 
 # Login credentials - update them with your own!
-
-username = ''
-password = ""
 
 # Record the MIME types of both parts - text/plain and text/html.
 part1 = MIMEText(text, 'plain')
