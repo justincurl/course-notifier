@@ -6,6 +6,7 @@ from selenium import webdriver
 import os
 import time 
 
+# Set up Selenium
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
@@ -20,17 +21,20 @@ url_mappings = {
   }
 courses = ['POL316', 'POL423', 'POL563']
 
+# Loop through courses of interest
 for course in courses:
+# get course and wait for it to load
   driver.get(url_mappings[course])
   time.sleep(2)
 
+# parse through the page with beautiful soup
   page = driver.page_source
-
   soup = BeautifulSoup(page, 'html.parser')
 
   print("============ SOUP ==========")
   print(soup.prettify())
 
+# get course title for email subject
   s_course_title = soup.find_all("h2", class_="course-title")
   for course in s_course_title:
     try: 
@@ -38,6 +42,7 @@ for course in courses:
     except:
       s_course_title = "error"
 
+# get course listing for email subject
   s_subject = soup.find_all("div", class_="subject-associations")
   for course in s_subject:
     try: 
@@ -45,7 +50,7 @@ for course in courses:
     except:
       s_subject = "error"
     
-    
+# get enrollment numbers
   s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
   s_section = soup.find_all("td", class_="class-section nowrap")
   s_class_number = soup.find_all("td", class_="class-number nowrap")
@@ -54,6 +59,7 @@ for course in courses:
   for i in range(len(s_section)):
     text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
+# prepare email address/login
   sender_email = 'princetonnotifier@gmail.com'
   password = 'Notifyme2020!'
   receiver_email = "justincurl13@gmail.com"
@@ -63,8 +69,7 @@ for course in courses:
   message["From"] = sender_email
   message["To"] = receiver_email
 
-  # Create the plain-text and HTML version of your message
-
+# Create html version of message
   html = """\
   <html>
     <body>
@@ -85,11 +90,10 @@ for course in courses:
   </html>
   """
 
-  # Turn these into plain/html MIMEText objects
+  # Turn html into MIMEText objects
   part1 = MIMEText(html, "html")
 
   # Add HTML/plain-text parts to MIMEMultipart message
-  # The email client will try to render the last part first
   message.attach(part1)
 
   # Create secure connection with server and send email
