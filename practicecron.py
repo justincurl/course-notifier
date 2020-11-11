@@ -20,7 +20,7 @@ page = driver.page_source
 
 d_course_title = driver.find_element_by_class_name('course-title')
 d_subject = driver.find_element_by_class_name('subject-associations')
-d_enrolled = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
+d_enrollment = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
 
 soup = BeautifulSoup(page, 'html.parser')
 
