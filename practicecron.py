@@ -18,6 +18,7 @@ url_mappings = {
   'POL563': 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005433',
   }
 courses = ['POL316', 'POL423', 'POL563']
+
 for course in courses:
   driver.get(url_mappings[course])
 
@@ -28,10 +29,9 @@ for course in courses:
   print("============ SOUP ==========")
   print(soup.prettify())
 
-  results = soup.find(id='course-details')
-
-  s_course_title = soup.find_all("h2", class_="course-title")
-  s_subject = soup.find_all("div", class_="subject-associations")
+  s_course_title = soup.find_all("h2", class_="course-title").content
+  s_subject = soup.find_all("div", class_="subject-associations").get_text()
+  
   s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
   s_section = soup.find_all("td", class_="class-section nowrap")
   s_class_number = soup.find_all("td", class_="class-number nowrap")
