@@ -42,7 +42,23 @@ results = soup.find(id='course-details')
 s_course_title = soup.find_all("h2", class_="course-title")
 s_subject = soup.find_all("div", class_="subject-associations")
 s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
+s_section = soup.find_all("td", class_="class-section nowrap")
+s_class_number = soup.find_all("td", class_="class-number nowrap")
 
+try:
+  s_enrollment1 = s_enrollment[0]
+except:
+  s_enrollment1 = ""
+
+try:
+  s_enrollmenttext = s_enrollment.get_text()
+except:
+  s_enrollmenttext = ""
+
+try:
+  s_enrollmentcontent = s_enrollment.content
+except:
+  s_enrollmentcontent = ""
 print("========== RESULTS ===========")
 
 sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
@@ -69,16 +85,19 @@ html = """\
   <body>
     <p>Hi,<br>
        How are you?<br>
-       Enrollment: 
-       D: {d_enrollment}
-       S: {s_enrollment}
+       S Section: {}
+       S Class Number: {}
+       S Enrollment: {}
+       0: {}
+       get_text(): {}
+       content: {}
     </p>
   </body>
 </html>
-""".format(d_enrollment = d_enrollment, s_enrollment=s_enrollment)
+""".format(s_section, s_class_number, s_enrollment, s_enrollment1, s_enrollmenttext, s_enrollmentcontent)
 
 # Turn these into plain/html MIMEText objects
-part1 = MIMEText(page, "html")
+part1 = MIMEText(text, "html")
 part2 = MIMEText(html, "html")
 
 # Add HTML/plain-text parts to MIMEMultipart message
