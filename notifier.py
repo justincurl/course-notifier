@@ -126,4 +126,5 @@ def notify(SEND_EMAIL):
   
   print('text sent')
 
-notify(True)
+if __name__ == "__main__": 
+  notify(True)
