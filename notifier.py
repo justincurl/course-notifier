@@ -88,6 +88,8 @@ def notify():
       
       enrollment.append((enrolled, limit))
 
+      # check if an email needs to even be send
+      print(enrolled, limit)
       if limit != None and enrolled != limit and enrolled > 0:
         SEND_EMAIL = True
       
