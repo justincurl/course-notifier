@@ -77,11 +77,10 @@ def notify(SEND_EMAIL):
     enrollment = []
     for i in range(len(s_section)):
       enrollment_readable = s_enrollment[i].get_text().split()
-      print(enrollment_readable[-1])
       if enrollment_readable[-1] == "limit":
         limit = None
       else:
-        limit = int(enrollment_readable[:-1])
+        limit = int(enrollment_readable[-1])
 
       enrolled = int(enrollment_readable[1])
       
