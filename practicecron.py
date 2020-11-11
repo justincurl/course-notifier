@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import os
+import time 
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -21,6 +22,7 @@ courses = ['POL316', 'POL423', 'POL563']
 
 for course in courses:
   driver.get(url_mappings[course])
+  time.sleep(2)
 
   page = driver.page_source
 
@@ -29,9 +31,21 @@ for course in courses:
   print("============ SOUP ==========")
   print(soup.prettify())
 
-  s_course_title = soup.find_all("h2", class_="course-title")[0].get_text()
-  s_subject = soup.find_all("div", class_="subject-associations")[0].get_text()
-  
+  s_course_title = soup.find_all("h2", class_="course-title")
+  for course in s_course_title:
+    try: 
+      s_course_title = course.get_text()
+    except:
+      s_course_title = "error"
+
+  s_subject = soup.find_all("div", class_="subject-associations")
+  for course in s_subject:
+    try: 
+      s_subject = course.get_text()
+    except:
+      s_subject = "error"
+    
+    
   s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
   s_section = soup.find_all("td", class_="class-section nowrap")
   s_class_number = soup.find_all("td", class_="class-number nowrap")
