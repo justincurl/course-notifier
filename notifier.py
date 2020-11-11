@@ -52,14 +52,9 @@ def notify():
     for course in s_course_title:
       try: 
         s_course_title = course.get_text()
+        s_course_title = " ".join(s_course_title.split())
       except:
-        s_course_title = "error"
-
-    try:
-      print(s_course_title)
-      print(" ".join(s_course_title.split()))
-    except:
-      print('joining error')
+        s_course_title = "title error"
 
   # get course listing for email subject
     s_subject = soup.find_all("div", class_="subject-associations")
@@ -68,9 +63,9 @@ def notify():
         s_subject = course.get_text()
         s_subject = " ".join(s_subject.split())
       except:
-        s_subject = "error"
+        s_subject = "subject error"
 
-    msg_subject += s_subject + "|"
+    msg_subject += s_subject + " | "
       
   # get enrollment numbers
     s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
@@ -89,12 +84,12 @@ def notify():
       print('type printing error')
     
     try:
-      print(enrollment_readable.split())
+      print(enrollment_readable[0])
     except:
-      print('splitting error')
+      print('indexing error')
     
   # Create string version of message
-    msg_info += "\n================{}:{}================\n".format(s_subject, s_course_title)
+    msg_info += "==================\n{}:{}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
       msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
       msg_info += "\n"
