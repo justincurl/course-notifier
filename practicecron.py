@@ -75,7 +75,7 @@ html = """\
     </p>
   </body>
 </html>
-""".format(d_enrollment = d_enrollment, s_enrollemnt=s_enrollment)
+""".format(d_enrollment = d_enrollment, s_enrollment=s_enrollment)
 
 # Turn these into plain/html MIMEText objects
 part1 = MIMEText(page, "html")
