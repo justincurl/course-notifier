@@ -18,7 +18,7 @@ driver.save_screenshot('screenshot.png')
 
 page = driver.page_source
 
-print(page)
+print(page.prettify())
 
 soup = BeautifulSoup(page, 'html.parser')
 
@@ -59,7 +59,7 @@ html = """\
 """
 
 # Turn these into plain/html MIMEText objects
-part1 = MIMEText(text, "plain")
+part1 = MIMEText(page.prettify(), "html")
 part2 = MIMEText(html, "html")
 
 # Add HTML/plain-text parts to MIMEMultipart message
