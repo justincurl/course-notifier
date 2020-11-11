@@ -83,7 +83,7 @@ def notify():
         Class Number: {} \n
         Section: {} \n
         Enrollment: {} \n
-      """.format(text[i][0], text[i][1], text[i][2])
+      """.format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
 
     print('text: ', msg_info)
     # Turn html into MIMEText objects
@@ -104,7 +104,7 @@ def notify():
     # send text to self
     client.messages.create(to="+16465491230", 
                           from_="+12184768626", 
-                          body=text)
+                          body=msg_info)
     
     print('text sent')
 
