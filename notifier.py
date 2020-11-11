@@ -90,7 +90,7 @@ def notify():
       print('indexing error')
     
   # Create string version of message
-    msg_info += "==================\n{}: {}\n===================\n".format(s_subject, s_course_title)
+    msg_info += "===================\n{}: {}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
       msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
       msg_info += "\n"
