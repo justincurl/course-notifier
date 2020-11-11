@@ -76,12 +76,11 @@ def notify():
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
   # Create string version of message
-    msg_info += """\
-      Class Information: \n
-    """
+    msg_info += """
+      \nClass Information:{}\n
+    """.format(s_subject)
     for i in range(len(text)):
-      msg_info += """\ 
-        Class Number: {} \n Section: {} \n Enrollment: {} \n
+      msg_info += """Class Number: {}\nSection: {}\nEnrollment:\n{}
       """.format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
 
     print('text: ', msg_info)
