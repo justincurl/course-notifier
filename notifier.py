@@ -21,6 +21,8 @@ def notify():
   password = 'Notifyme2020!'
   recipients = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
 
+  SEND_EMAIL = False
+
   # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
   client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
 
@@ -74,21 +76,27 @@ def notify():
     s_class_number = soup.find_all("td", class_="class-number nowrap")
 
     text = []
-    enrollment_readable = []
+    enrollment = []
     for i in range(len(s_section)):
       enrollment_readable = s_enrollment[i].get_text().split()
-      print(enrollment_readable)
-      text.append((s_class_number[i], s_section[i], s_enrollment[i].get_text().split()))
+      if enrollment_readable[:-1] == "limit":
+        limit = None
+      else:
+        limit = int(enrollment_readable[:-1])
 
-    try:
-      print(enrollment_readable[0].get_text())
-    except:
-      print('indexing error')
-    
+      enrolled = int(enrollment_readable[1])
+      
+      enrollment.append((enrolled, limit))
+
+      if limit != None and enrolled != limit and enrolled > 0:
+        SEND_EMAIL = True
+      
+      text.append((s_class_number[i], s_section[i]))
+
   # Create string version of message
     msg_info += "====================\n{}: {}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
-      msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
+      msg_info += "Class Number: {}\nSection: {}\nEnrolled: {}\nLimit: {}\n".format(text[i][0].get_text(), text[i][1].get_text(), enrollment[i][0], enrollment[i][1])
       msg_info += "\n"
     
     print('text: ', msg_info)
