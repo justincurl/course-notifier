@@ -7,7 +7,7 @@ import os
 import time
 from twilio.rest import Client
 
-def notify(SEND_EMAIL=False):
+def notify(SEND_MESSAGE=False):
   # Set up Selenium
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -87,10 +87,10 @@ def notify(SEND_EMAIL=False):
       enrollment.append((enrolled, limit))
 
       # check if an email needs to even be send
-      print(enrolled, limit)
       if limit != None and enrolled != limit and enrolled > 0:
+        print(enrolled, limit)
         print('set to true: ^^')
-        SEND_EMAIL = True
+        SEND_MESSAGE = True
       
       text.append((s_class_number[i], s_section[i]))
   # Create string version of message
@@ -99,8 +99,9 @@ def notify(SEND_EMAIL=False):
       msg_info += "Class Number: {}\nSection: {}\nEnrolled: {}\nLimit: {}\n".format(text[i][0].get_text(), text[i][1].get_text(), enrollment[i][0], enrollment[i][1])
       msg_info += "\n"
     
+  if SEND_MESSAGE:
     print(msg_info)
-  if SEND_EMAIL:
+
     message["Subject"] = msg_subject
 
     # Turn msg_info into MIMEText objects
@@ -124,6 +125,8 @@ def notify(SEND_EMAIL=False):
                           body=msg_info)
     
     print('text sent')
+  else:
+    print("No Reason to Notify")
 
 if __name__ == "__main__": 
   notify(True)
