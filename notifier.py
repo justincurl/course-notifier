@@ -47,7 +47,7 @@ def notify():
     page = driver.page_source
     soup = BeautifulSoup(page, 'html.parser')
 
-  # get course title for email subject
+  # get course title
     s_course_title = soup.find_all("h2", class_="course-title")
     for course in s_course_title:
       try: 
@@ -56,7 +56,7 @@ def notify():
       except:
         s_course_title = "title error"
 
-  # get course listing for email subject
+  # get course listing 
     s_subject = soup.find_all("div", class_="subject-associations")
     for course in s_subject:
       try: 
@@ -65,6 +65,7 @@ def notify():
       except:
         s_subject = "subject error"
 
+  # add to email subject
     msg_subject += s_subject + " | "
       
   # get enrollment numbers
@@ -76,7 +77,7 @@ def notify():
     enrollment_readable = []
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
-      enrollment_readable.append(s_enrollment[i])
+      enrollment_readable.append(s_enrollment[i].get_text())
 
     try:
       print(type(enrollment_readable))
@@ -89,7 +90,7 @@ def notify():
       print('indexing error')
     
   # Create string version of message
-    msg_info += "==================\n{}:{}\n===================\n".format(s_subject, s_course_title)
+    msg_info += "==================\n{}: {}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
       msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}\n".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
       msg_info += "\n"
@@ -97,7 +98,8 @@ def notify():
     print('text: ', msg_info)
   
   message["Subject"] = msg_subject
-  # Turn html into MIMEText objects
+
+  # Turn msg_info into MIMEText objects
   part1 = MIMEText(msg_info, "plain")
 
   # Add HTML/plain-text parts to MIMEMultipart message
