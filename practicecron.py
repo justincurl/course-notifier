@@ -33,7 +33,9 @@ s_class_number = soup.find_all("td", class_="class-number nowrap")
 
 text = []
 for i in range(len(s_section)):
-  text.append(s_class_number[i], s_section[i], s_enrollment[i])
+  text.append(s_class_number[i])
+  text.append(s_section[i])
+  text.append(s_enrollment[i])
 
 print("========== RESULTS ===========")
 
