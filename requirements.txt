@@ -1,4 +1,5 @@
 appdirs==1.4.4
+APScheduler==3.6.3
 astroid==2.3.3
 attrs==19.3.0
 beautifulsoup4==4.9.3
@@ -20,6 +21,7 @@ pylint==2.4.4
 PyQt5==5.14.1
 PyQt5-sip==12.7.1
 python-http-client==3.3.1
+pytz==2020.4
 regex==2020.6.8
 requests==2.24.0
 selenium==3.141.0
@@ -30,6 +32,7 @@ starkbank-ecdsa==1.1.0
 toml==0.10.1
 typed-ast==1.4.1
 typing-extensions==3.7.4.3
+tzlocal==2.1
 urllib3==1.25.11
 virtualenv==20.1.0
 wrapt==1.11.2
