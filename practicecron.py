@@ -18,14 +18,24 @@ driver.save_screenshot('screenshot.png')
 
 page = driver.page_source
 
-d_course_title = driver.find_element_by_class_name('course-title')
-d_subject = driver.find_element_by_class_name('subject-associations')
-d_enrollment = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
-
 soup = BeautifulSoup(page, 'html.parser')
 
 print("============ SOUP ==========")
 print(soup.prettify())
+
+try:
+  d_course_title = driver.find_element_by_class_name('course-title')
+except:
+  d_course_title = ""
+try: 
+  d_subject = driver.find_element_by_class_name('subject-associations')
+except:
+  d_subject = ""
+try:
+  d_enrollment = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
+except:
+  d_enrollment = ""
+
 
 results = soup.find(id='course-details')
 
