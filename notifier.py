@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import os
 import time
+from twilio.rest import Client
 
 def notify():
   # Set up Selenium
@@ -14,6 +15,14 @@ def notify():
   chrome_options.add_argument("--disable-dev-shm-usage")
   chrome_options.add_argument("--no-sandbox")
   driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
+ # Set-up email account
+  sender_email = 'princetonnotifier@gmail.com'
+  password = 'Notifyme2020!'
+  receiver_email = ["justincurl13@gmail.com"]
+
+  # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
+  client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
 
   url_mappings = {
     'POL316': 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005300',
@@ -60,39 +69,24 @@ def notify():
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
-  # prepare email address/login
-    sender_email = 'princetonnotifier@gmail.com'
-    password = 'Notifyme2020!'
-    receiver_email = "justincurl13@gmail.com"
-
     message = MIMEMultipart("alternative")
     message["Subject"] = "[Enrollment Update] {}: {}".format(s_subject, s_course_title)
     message["From"] = sender_email
     message["To"] = receiver_email
 
   # Create html version of message
-    html = """\
-    <html>
-      <body>
-        <h3> Class Information </h3>
+    text = """\
+      Class Information:
     """
     for i in range(len(text)):
-      html+= """\
-        <ul>
-          <li>{}</li>
-          <li>{}</li>
-          <li>{}</li>
-        </ul>
-        <br>
+      text+= """\
+        Class Number: {} \n
+        Section: {} \n
+        Enrollment: {} \n
       """.format(text[i][0], text[i][1], text[i][2])
 
-    html += """\
-      </body>
-    </html>
-    """
-
     # Turn html into MIMEText objects
-    part1 = MIMEText(html, "html")
+    part1 = MIMEText(text, "plain")
 
     # Add HTML/plain-text parts to MIMEMultipart message
     message.attach(part1)
@@ -104,3 +98,8 @@ def notify():
         server.sendmail(
             sender_email, receiver_email, message.as_string()
         )
+
+    # send text to self
+    client.messages.create(to="+16465491230", 
+                          from_="+12184768626", 
+                          body=text)
