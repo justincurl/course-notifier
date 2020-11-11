@@ -23,20 +23,6 @@ soup = BeautifulSoup(page, 'html.parser')
 print("============ SOUP ==========")
 print(soup.prettify())
 
-try:
-  d_course_title = driver.find_element_by_class_name('course-title')
-except:
-  d_course_title = ""
-try: 
-  d_subject = driver.find_element_by_class_name('subject-associations')
-except:
-  d_subject = ""
-try:
-  d_enrollment = driver.find_elements_by_class_name('class-enrollment-numbers nowrap')
-except:
-  d_enrollment = ""
-
-
 results = soup.find(id='course-details')
 
 s_course_title = soup.find_all("h2", class_="course-title")
@@ -45,20 +31,10 @@ s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
 s_section = soup.find_all("td", class_="class-section nowrap")
 s_class_number = soup.find_all("td", class_="class-number nowrap")
 
-try:
-  s_enrollment1 = s_enrollment[0]
-except:
-  s_enrollment1 = ""
+text = []
+for i in range(len(s_section)):
+  text.append(s_class_number[i], s_section[i], s_enrollment[i])
 
-try:
-  s_enrollmenttext = s_enrollment.get_text()
-except:
-  s_enrollmenttext = ""
-
-try:
-  s_enrollmentcontent = s_enrollment.content
-except:
-  s_enrollmentcontent = ""
 print("========== RESULTS ===========")
 
 sections = results.find_all('td', class_='class-enrollment-numbers nowrap')
@@ -75,26 +51,25 @@ message["From"] = sender_email
 message["To"] = receiver_email
 
 # Create the plain-text and HTML version of your message
-text = """\
-Driver Title: {}
-Driver Subject: {}
-Soup Title: {}
-Soup Subject: {}""".format(d_course_title, d_subject, s_course_title, s_subject)
+
 html = """\
 <html>
   <body>
-    <p>Hi,<br>
-       How are you?<br>
-       S Section: {}
-       S Class Number: {}
-       S Enrollment: {}
-       0: {}
-       get_text(): {}
-       content: {}
-    </p>
+    <h3> Class Information </h3>
+"""
+for i in range(len(text)):
+  html+= """\
+    <ul>
+       <li>{}</li>
+       <li>{}</li>
+       <li>{}</li>
+    <ul>
+  """.format(text[i][0], text[i][1], text[i][2])
+
+html += """\
   </body>
 </html>
-""".format(s_section, s_class_number, s_enrollment, s_enrollment1, s_enrollmenttext, s_enrollmentcontent)
+"""
 
 # Turn these into plain/html MIMEText objects
 part1 = MIMEText(text, "html")
