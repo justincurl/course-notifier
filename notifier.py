@@ -75,13 +75,24 @@ def notify():
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
+    try:
+      print(type(s_subject))
+    except:
+      print('type printing error')
+    
+    try:
+      print(s_subject.split())
+    except:
+      print('subject splitting error')
+
+    try:
+      print(s_subject.replace(" ", ""))
+    except:
+      print('whitespace replacement error')
   # Create string version of message
-    msg_info += """
-      \nClass Information:{}\n
-    """.format(s_subject)
+    msg_info += "\nClass Information:{}\n".format(s_subject)
     for i in range(len(text)):
-      msg_info += """Class Number: {}\nSection: {}\nEnrollment:\n{}
-      """.format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
+      msg_info += "Class Number: {}\nSection: {}\nEnrollment:\n{}".format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
 
     print('text: ', msg_info)
   # Turn html into MIMEText objects
