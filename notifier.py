@@ -7,7 +7,7 @@ import os
 import time
 from twilio.rest import Client
 
-def notify():
+def notify(SEND_EMAIL):
   # Set up Selenium
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -20,8 +20,6 @@ def notify():
   sender_email = 'princetonnotifier@gmail.com'
   password = 'Notifyme2020!'
   recipients = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
-
-  SEND_EMAIL = False
 
   # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
   client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
