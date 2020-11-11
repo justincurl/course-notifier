@@ -30,6 +30,12 @@ def notify():
     'POL563': 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005433',
     }
   courses = ['POL316', 'POL423', 'POL563']
+  msg_info = ""
+
+  message = MIMEMultipart("alternative")
+  message["Subject"] = "[Enrollment Update]: "
+  message["From"] = sender_email
+  message["To"] = ', '.join(recipients)
 
   # Loop through courses of interest
   for course in courses:
@@ -40,9 +46,6 @@ def notify():
   # parse through the page with beautiful soup
     page = driver.page_source
     soup = BeautifulSoup(page, 'html.parser')
-
-    print("============ SOUP ==========")
-    print(soup.prettify())
 
   # get course title for email subject
     s_course_title = soup.find_all("h2", class_="course-title")
@@ -59,6 +62,9 @@ def notify():
         s_subject = course.get_text()
       except:
         s_subject = "error"
+
+    message["Subject"] += s_subject
+    message["Subject"] += "|"
       
   # get enrollment numbers
     s_enrollment = soup.find_all("td", class_="class-enrollment-numbers nowrap")
@@ -69,43 +75,36 @@ def notify():
     for i in range(len(s_section)):
       text.append((s_class_number[i], s_section[i], s_enrollment[i]))
 
-    message = MIMEMultipart("alternative")
-    message["Subject"] = "[Enrollment Update] {}: {}".format(s_subject, s_course_title)
-    message["From"] = sender_email
-    message["To"] = ', '.join(recipients)
-
   # Create string version of message
-    msg_info = """\
+    msg_info += """\
       Class Information: \n
     """
     for i in range(len(text)):
-      msg_info += """\
-        Class Number: {} \n
-        Section: {} \n
-        Enrollment: {} \n
+      msg_info += """\ 
+        Class Number: {} \n Section: {} \n Enrollment: {} \n
       """.format(text[i][0].get_text(), text[i][1].get_text(), text[i][2].get_text())
 
     print('text: ', msg_info)
-    # Turn html into MIMEText objects
-    part1 = MIMEText(msg_info, "plain")
+  # Turn html into MIMEText objects
+  part1 = MIMEText(msg_info, "plain")
 
-    # Add HTML/plain-text parts to MIMEMultipart message
-    message.attach(part1)
+  # Add HTML/plain-text parts to MIMEMultipart message
+  message.attach(part1)
 
-    # Create secure connection with server and send email
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(
-            sender_email, recipients, message.as_string()
-        )
-    print('email sent')
+  # Create secure connection with server and send email
+  context = ssl.create_default_context()
+  with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+      server.login(sender_email, password)
+      server.sendmail(
+          sender_email, recipients, message.as_string()
+      )
+  print('email sent')
 
-    # send text to self
-    client.messages.create(to="+16465491230", 
-                          from_="+12184768626", 
-                          body=msg_info)
-    
-    print('text sent')
+  # send text to self
+  client.messages.create(to="+16465491230", 
+                        from_="+12184768626", 
+                        body=msg_info)
+  
+  print('text sent')
 
 notify()
