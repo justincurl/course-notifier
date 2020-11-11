@@ -33,7 +33,7 @@ def notify(SEND_EMAIL):
   msg_info = ""
 
   message = MIMEMultipart("alternative")
-  msg_subject = "[Enrollment Update]: "
+  msg_subject = "[Enrollment Update] "
   message["From"] = sender_email
   message["To"] = ', '.join(recipients)
 
