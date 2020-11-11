@@ -7,7 +7,7 @@ import os
 import time
 from twilio.rest import Client
 
-def notify(SEND_EMAIL):
+def notify(SEND_EMAIL=False):
   # Set up Selenium
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -93,7 +93,6 @@ def notify(SEND_EMAIL):
         SEND_EMAIL = True
       
       text.append((s_class_number[i], s_section[i]))
-
   # Create string version of message
     msg_info += "===================\n{}: {}\n===================\n".format(s_subject, s_course_title)
     for i in range(len(text)):
@@ -101,30 +100,30 @@ def notify(SEND_EMAIL):
       msg_info += "\n"
     
     print(msg_info)
-  
-  message["Subject"] = msg_subject
+  if SEND_EMAIL:
+    message["Subject"] = msg_subject
 
-  # Turn msg_info into MIMEText objects
-  part1 = MIMEText(msg_info, "plain")
+    # Turn msg_info into MIMEText objects
+    part1 = MIMEText(msg_info, "plain")
 
-  # Add HTML/plain-text parts to MIMEMultipart message
-  message.attach(part1)
+    # Add HTML/plain-text parts to MIMEMultipart message
+    message.attach(part1)
 
-  # Create secure connection with server and send email
-  context = ssl.create_default_context()
-  with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-      server.login(sender_email, password)
-      server.sendmail(
-          sender_email, recipients, message.as_string()
-      )
-  print('email sent')
+    # Create secure connection with server and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(
+            sender_email, recipients, message.as_string()
+        )
+    print('email sent')
 
-  # send text to self
-  client.messages.create(to="+16465491230", 
-                        from_="+12184768626", 
-                        body=msg_info)
-  
-  print('text sent')
+    # send text to self
+    client.messages.create(to="+16465491230", 
+                          from_="+12184768626", 
+                          body=msg_info)
+    
+    print('text sent')
 
 if __name__ == "__main__": 
   notify(True)
