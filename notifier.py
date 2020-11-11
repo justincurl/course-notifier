@@ -72,7 +72,7 @@ def notify():
     message = MIMEMultipart("alternative")
     message["Subject"] = "[Enrollment Update] {}: {}".format(s_subject, s_course_title)
     message["From"] = sender_email
-    message["To"] = recipients.join(', ')
+    message["To"] = ', '.join(recipients)
 
   # Create string version of message
     text = """\
