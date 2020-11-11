@@ -107,3 +107,5 @@ def notify():
                           body=text)
     
     print('text sent')
+
+notify()
