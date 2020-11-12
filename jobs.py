@@ -7,7 +7,7 @@ sched = BlockingScheduler()
 def update_notifier():
  	notify(False)
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour='19', timezone='America/New_York')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour='20', minute='10', timezone='America/New_York')
 def update_notifier_true():
  	notify(True)
 
