@@ -127,6 +127,8 @@ def notify(SEND_MESSAGE=False):
     print('text sent')
   else:
     print("No Reason to Notify")
+  
+  driver.quit()
 
 if __name__ == "__main__": 
   notify(True)
