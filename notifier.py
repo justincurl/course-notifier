@@ -17,12 +17,12 @@ def notify(SEND_MESSAGE=False):
   driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
  # Set-up email sending 
-  sender_email = 'princetonnotifier@gmail.com'
-  password = 'Notifyme2020!'
+  sender_email = os.environ.get("EMAIL_ADDRESS")
+  password = os.environ.get("EMAIL_PASSWORD")
   recipients = ["justincurl13@gmail.com", "jcurl@princeton.edu"]
 
   # Set-up Twilio Account: the following line needs your Twilio Account SID and Auth Token
-  client = Client("AC8ccc3ec03758febba17614ee5aecdeb1", "97c687fbe1e5c42ba09f99ffc3557241")
+  client = Client(os.environ.get("TWILIO_SID"), os.environ.get("TWILIO_AUTH"))
 
   url_mappings = {
     'POL316': 'https://registrar.princeton.edu/course-offerings/course-details?term=1214&courseid=005300',
@@ -120,8 +120,8 @@ def notify(SEND_MESSAGE=False):
     print('email sent')
 
     # send text to self
-    client.messages.create(to="+16465491230", 
-                          from_="+12184768626", 
+    client.messages.create(to=os.environ.get("PHONE_NUMBER"), 
+                          from_=os.environ.get("TWILIO_NUMBER"), 
                           body=msg_info)
     
     print('text sent')
